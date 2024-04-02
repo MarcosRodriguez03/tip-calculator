@@ -1,113 +1,196 @@
+'use client'
 import Image from "next/image";
 
+import peopleIcon from '@../../../images/icon-person.svg'
+import dollarIcon from '@../../../images/icon-dollar.svg'
+import RightHalf from "./components/RightHalf/Page";
+import TipBtn from "./components/TipBtn/Page";
+import { useEffect, useRef, useState } from "react";
+{/* <TipBtn  number={5} color="bg-[#00494d]" /> */ }
+
 export default function Home() {
+
+  const [bill, setBill] = useState<number>();
+  const [people, setPeople] = useState<number>();
+  const [tip, setTip] = useState<number>()
+  const [totalTip, setTotalTip] = useState<string>("$0.00");
+  const [total, setTotal] = useState<string>("$0.00");
+
+  const [bgBtn, setBgBtn] = useState<string>("bg-[#0D686D]");
+
+
+  const input1Ref = useRef<HTMLInputElement>(null);
+  const input2Ref = useRef<HTMLInputElement>(null);
+  const input3Ref = useRef<HTMLInputElement>(null);
+
+
+  const handleTip = (para: number) => {
+    setTip(para)
+  }
+
+  const reset = () => {
+    if (input1Ref.current !== null) {
+      input1Ref.current.value = ''; // Clear the first input field
+      setBill(undefined)
+    }
+    if (input2Ref.current !== null) {
+      input2Ref.current.value = ''; // Clear the second input field
+      setTip(undefined)
+    }
+    if (input3Ref.current !== null) {
+      input3Ref.current.value = ''; // Clear the third input field
+      setPeople(undefined)
+    }
+    setBgBtn("bg-[#0D686D]")
+    setTotal("$0.00")
+    setTotalTip("$0.00")
+
+  }
+
+
+
+  useEffect(() => {
+
+
+    if (bill && bill <= 0) {
+      console.log("above 0 bill please")
+      setTotal("$0.00")
+      setTotalTip("$0.00")
+      setBgBtn("bg-[#0D686D]")
+    }
+    if (people && people <= 0) {
+      console.log("above 0 people please")
+      setTotal("$0.00")
+      setTotalTip("$0.00")
+      setBgBtn("bg-[#0D686D]")
+    }
+
+    if (tip && tip < 0) {
+      console.log("no negative tip")
+      setTotal("$0.00")
+      setTotalTip("$0.00")
+      setBgBtn("bg-[#0D686D]")
+
+    }
+
+    if (tip && people && people > 0 && bill && bill > 0) {
+      setBgBtn("bg-[#26c0ab]")
+      console.log(people, tip, bill)
+      let tipNum = Number(tip)
+      let billNum = Number(bill)
+      let peopleNum = Number(people)
+
+      let MathTotal = (billNum + (billNum * tipNum / 100)) / peopleNum
+      let MathTotalTip = (billNum * tipNum / 100) / peopleNum
+      // console.log(String(MathTotal.toFixed(2)))
+      // console.log(String(MathTotalTip.toFixed(2)))
+      setTotal("$" + String(MathTotal.toFixed(2)))
+      setTotalTip("$" + String(MathTotalTip.toFixed(2)))
+
+    }
+
+
+
+
+
+  }, [bill, people, tip])
+
+
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="flex justify-center mt-[144px] lg:mt-0">
+      <div className="flex justify-center  items-center w-[920px] h-screen ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[32px] bg-[#ffffff] rounded-[10px] py-[32px] px-[32px]">
+          <div className="px-[10px] flex flex-col justify-between py-[16px]">
+
+            <div>
+              <p className="text-[#00494d] spaceFont mb-[12px]">Bill</p>
+              {/* <div className="flex items-center h-[48px] bg-[#f4fafa] px-[10px] rounded-[5px]     ">
+                <Image className="w-[15px] h-[15px]" alt="people" src={dollarIcon} />
+                <input
+                  onChange={(e) => setBill(e.target.value)}
+                  className="cursor-pointer  bg-transparent text-right w-full text-[24px]" placeholder="0" type="number" />
+              </div> */}
+              <div className="relative ">
+                <input
+                  type="number"
+                  required
+                  ref={input1Ref}
+                  onChange={(e: any) => setBill(e.target.value)}
+                  className="border spaceFont text-[24px] placeholder-[#7f9c9f] text-[#00494d] font-bold border-gray-300 rounded-md py-2 px-4 pl-10 h-[48px] bg-[#f4fafa] w-full border-none text-right"
+                  placeholder="0"
+                />
+                <Image
+                  src={dollarIcon}
+                  className="absolute left-3 top-4 w-4 h-4"
+                  alt="Image"
+                />
+              </div>
+
+            </div>
+
+
+
+
+            <div className="mt-[36px]">
+              <p className="mb-[12px] spaceFont text-[#00494d]">Select Tip %</p>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-[16px]">
+                <TipBtn number={5} setTip={handleTip} />
+                <TipBtn number={10} setTip={handleTip} />
+                <TipBtn number={15} setTip={handleTip} />
+                <TipBtn number={25} setTip={handleTip} />
+                <TipBtn number={50} setTip={handleTip} />
+                <input
+
+                  ref={input2Ref}
+                  onChange={(e: any) => setTip(e.target.value)}
+                  type="number" placeholder="Custom" className="cursor-pointer spaceFont px-2 rounded-[5px] text-[24px] bg-[#f4fafa] placeholder-[#5e7a7d] text-[#5e7a7d] placeholder-center text-right  " />
+              </div>
+            </div>
+
+
+
+            <div className="mt-[36px]">
+              <p className="mb-[12px] spaceFont text-[#00494d]">Number of People</p>
+
+
+              {/* <div className="flex items-center h-[48px] bg-[#f4fafa] px-[10px] rounded-[5px]">
+                <Image className="w-[15px] h-[15px]" alt="people" src={peopleIcon} />
+                <input
+                  onChange={(e) => setPeople(e.target.value)}
+                  className="cursor-pointer bg-transparent text-right w-full text-[24px]" placeholder="0" type="number" />
+              </div> */}
+
+
+              <div className="relative ">
+                <input
+                  type="number"
+                  required
+                  ref={input3Ref}
+                  onChange={(e: any) => setPeople(e.target.value)}
+                  className="border spaceFont text-[24px] placeholder-[#7f9c9f] text-[#00494d] font-bold border-gray-300 rounded-md py-2 px-4 pl-10 h-[48px] bg-[#f4fafa] w-full border-none text-right"
+                  placeholder="0"
+                />
+                <Image
+                  src={dollarIcon}
+                  className="absolute left-3 top-4 w-4 h-4"
+                  alt="Image"
+                />
+              </div>
+            </div>
+
+          </div >
+          <div>
+            <RightHalf bgColor={bgBtn} reset={reset} tip={totalTip} total={total} />
+          </div>
+
+
+
+
         </div>
       </div>
+    </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
   );
 }
