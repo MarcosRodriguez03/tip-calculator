@@ -1,3 +1,11 @@
+Marcos Rodriguez
+Tip Calculator
+04/02/24
+Brief Description:
+Peer Reviewer: Aidan Younathan
+Peer Review: This looks very close to the figma, its really good, it works like it should, I kinda screwed it up when I entered e into the bill but thats a mathimatical term so I dont think there is a way to prevent that, and also you are missing the logo on the top, it doesnt seem to be present but other than that really good job!
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
