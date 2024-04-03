@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 type iObject = {
@@ -11,6 +11,9 @@ type iObject = {
 
 
 const RightHalf = (props: iObject) => {
+    useEffect(() => {
+        props.bgColor
+    }, [])
     return (
         <div className='bg-[#00494d] h-[257px] lg:h-[417px] rounded-[10px] px-[20px] lg:px-[60px] py-[30px] lg:py-[40px] relative  '>
             <div className='flex items-center justify-between'>
@@ -35,7 +38,7 @@ const RightHalf = (props: iObject) => {
             <div className='flex justify-center'>
                 <button
                     onClick={() => props.reset()}
-                    className={` spaceFont absolute  lg:h-[48px] ${props.bgColor} bottom-0 mb-[24px] lg:mb-[40px]  min-w-[280px] lg:w-[335px]   cursor-pointer   bg-[#26c0ab]    hover:bg-[#A0E8Df] text-[#00494d] flex items-center justify-center text-[24px] rounded-[5px]`}>
+                    className={` spaceFont absolute  lg:h-[48px] ${props.bgColor} bottom-0 mb-[24px] lg:mb-[40px]  min-w-[280px] lg:w-[335px]   cursor-pointer     hover:bg-[#A0E8Df] text-[#00494d] flex items-center justify-center text-[24px] rounded-[5px]`}>
                     RESET
                 </button>
             </div>
