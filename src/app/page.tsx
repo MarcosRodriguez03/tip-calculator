@@ -2,10 +2,14 @@
 import Image from "next/image";
 
 import peopleIcon from '@../../../images/icon-person.svg'
+import logo from '@../../../images/logo.svg'
 import dollarIcon from '@../../../images/icon-dollar.svg'
 import RightHalf from "./components/RightHalf/Page";
 import TipBtn from "./components/TipBtn/Page";
 import { useEffect, useRef, useState } from "react";
+import { tree } from "next/dist/build/templates/app-page";
+
+
 {/* <TipBtn  number={5} color="bg-[#00494d]" /> */ }
 
 export default function Home() {
@@ -17,11 +21,13 @@ export default function Home() {
   const [total, setTotal] = useState<string>("$0.00");
 
   const [bgBtn, setBgBtn] = useState<string>("bg-[#0D686D]");
+  const [focus, setFocus] = useState<string>("")
 
 
   const input1Ref = useRef<HTMLInputElement>(null);
   const input2Ref = useRef<HTMLInputElement>(null);
   const input3Ref = useRef<HTMLInputElement>(null);
+  const [toggle, setToggle] = useState<boolean>(true)
 
 
   const handleTip = (para: number) => {
@@ -63,7 +69,14 @@ export default function Home() {
       setTotal("$0.00")
       setTotalTip("$0.00")
       setBgBtn("bg-[#0D686D]")
+      setFocus("focus:ring-[#e76d57]")
+      setToggle(false)
+    } else {
+      setFocus("focus:ring-[#26c0ab]")
+      setToggle(true)
     }
+
+
 
     if (tip && tip < 0) {
       console.log("no negative tip")
@@ -71,9 +84,11 @@ export default function Home() {
       setTotalTip("$0.00")
       setBgBtn("bg-[#0D686D]")
 
+
     }
 
     if (tip && people && people > 0 && bill && bill > 0) {
+
       setBgBtn("bg-[#26c0ab]")
       console.log(people, tip, bill)
       let tipNum = Number(tip)
@@ -98,63 +113,74 @@ export default function Home() {
 
 
   return (
-    <div className="flex justify-center mt-[144px] lg:mt-0">
-      <div className="flex justify-center  items-center w-[920px] h-screen ">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[32px] bg-[#ffffff] rounded-[10px] py-[32px] px-[32px]">
-          <div className="px-[10px] flex flex-col justify-between py-[16px]">
+    <div className="h-screen">
+      <div className="flex justify-center mb-[5%] mt-[12%]">
+        <Image alt="logo" src={logo} />
+      </div>
 
-            <div>
-              <p className="text-[#00494d] spaceFont mb-[12px]">Bill</p>
-              {/* <div className="flex items-center h-[48px] bg-[#f4fafa] px-[10px] rounded-[5px]     ">
+
+      <div className="flex justify-center ">
+        <div className="flex justify-center  items-center w-[920px] h-fit ">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[32px] bg-[#ffffff] rounded-[10px] py-[32px] px-[32px]">
+            <div className="px-[10px] flex flex-col justify-between py-[16px]">
+
+              <div>
+                <p className="text-[#00494d] spaceFont mb-[12px]">Bill</p>
+                {/* <div className="flex items-center h-[48px] bg-[#f4fafa] px-[10px] rounded-[5px]     ">
                 <Image className="w-[15px] h-[15px]" alt="people" src={dollarIcon} />
                 <input
                   onChange={(e) => setBill(e.target.value)}
                   className="cursor-pointer  bg-transparent text-right w-full text-[24px]" placeholder="0" type="number" />
               </div> */}
-              <div className="relative ">
-                <input
-                  type="number"
-                  required
-                  ref={input1Ref}
-                  onChange={(e: any) => setBill(e.target.value)}
-                  className="border spaceFont text-[24px] placeholder-[#7f9c9f] text-[#00494d] font-bold border-gray-300 rounded-md py-2 px-4 pl-10 h-[48px] bg-[#f4fafa] w-full border-none text-right"
-                  placeholder="0"
-                />
-                <Image
-                  src={dollarIcon}
-                  className="absolute left-3 top-4 w-4 h-4"
-                  alt="Image"
-                />
+                <div className="relative ">
+                  <input
+                    type="number"
+                    required
+                    ref={input1Ref}
+                    onChange={(e: any) => setBill(e.target.value)}
+                    className="focus:ring-[#26c0ab] border-none focus:ring-2  focus:outline-none  spaceFont text-[24px] placeholder-[#7f9c9f] text-[#00494d] font-bold border-gray-300 rounded-md py-2 px-4 pl-10 h-[48px] bg-[#f4fafa] w-full text-right"
+                    placeholder="0"
+                  />
+                  <Image
+                    src={dollarIcon}
+                    className="absolute left-3 top-4 w-4 h-4"
+                    alt="Image"
+                  />
+                </div>
+
               </div>
 
-            </div>
 
 
 
+              <div className="mt-[36px] ">
+                <p className="mb-[12px] spaceFont text-[#00494d]">Select Tip %</p>
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-[16px]">
+                  <TipBtn number={5} setTip={handleTip} />
+                  <TipBtn number={10} setTip={handleTip} />
+                  <TipBtn number={15} setTip={handleTip} />
+                  <TipBtn number={25} setTip={handleTip} />
+                  <TipBtn number={50} setTip={handleTip} />
+                  <input
 
-            <div className="mt-[36px]">
-              <p className="mb-[12px] spaceFont text-[#00494d]">Select Tip %</p>
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-[16px]">
-                <TipBtn number={5} setTip={handleTip} />
-                <TipBtn number={10} setTip={handleTip} />
-                <TipBtn number={15} setTip={handleTip} />
-                <TipBtn number={25} setTip={handleTip} />
-                <TipBtn number={50} setTip={handleTip} />
-                <input
-
-                  ref={input2Ref}
-                  onChange={(e: any) => setTip(e.target.value)}
-                  type="number" placeholder="Custom" className="cursor-pointer spaceFont px-2 rounded-[5px] text-[24px] bg-[#f4fafa] placeholder-[#5e7a7d] text-[#5e7a7d] placeholder-center text-right  " />
+                    ref={input2Ref}
+                    onChange={(e: any) => setTip(e.target.value)}
+                    type="number" placeholder="Custom" className="focus:ring-[#26c0ab] border-none focus:ring-2  focus:outline-none  cursor-pointer spaceFont px-2 rounded-[5px] text-[24px] bg-[#f4fafa] placeholder-[#5e7a7d] text-[#5e7a7d] placeholder-center text-right  " />
+                </div>
               </div>
-            </div>
 
 
 
-            <div className="mt-[36px]">
-              <p className="mb-[12px] spaceFont text-[#00494d]">Number of People</p>
+              <div className="mt-[36px]">
+                <div className="flex justify-between">
+                  <p className="mb-[12px] spaceFont text-[#00494d]">Number of People</p>
+                  <p className="mb-[12px] spaceFont text-[#e76d57]">{toggle == false ? "Can't be 0" : ""} </p>
+
+                </div>
 
 
-              {/* <div className="flex items-center h-[48px] bg-[#f4fafa] px-[10px] rounded-[5px]">
+
+                {/* <div className="flex items-center h-[48px] bg-[#f4fafa] px-[10px] rounded-[5px]">
                 <Image className="w-[15px] h-[15px]" alt="people" src={peopleIcon} />
                 <input
                   onChange={(e) => setPeople(e.target.value)}
@@ -162,34 +188,36 @@ export default function Home() {
               </div> */}
 
 
-              <div className="relative ">
-                <input
-                  type="number"
-                  required
-                  ref={input3Ref}
-                  onChange={(e: any) => setPeople(e.target.value)}
-                  className="border spaceFont text-[24px] placeholder-[#7f9c9f] text-[#00494d] font-bold border-gray-300 rounded-md py-2 px-4 pl-10 h-[48px] bg-[#f4fafa] w-full border-none text-right"
-                  placeholder="0"
-                />
-                <Image
-                  src={dollarIcon}
-                  className="absolute left-3 top-4 w-4 h-4"
-                  alt="Image"
-                />
+                <div className="relative ">
+                  <input
+                    type="number"
+                    required
+                    ref={input3Ref}
+                    onChange={(e: any) => setPeople(e.target.value)}
+                    className={`border-none focus:ring-2 ${focus} focus:outline-none spaceFont text-[24px] placeholder-[#7f9c9f] text-[#00494d] font-bold border-gray-300 rounded-md py-2 px-4 pl-10 h-[48px] bg-[#f4fafa] w-full  text-right`}
+                    placeholder="0"
+                  />
+                  <Image
+                    src={peopleIcon}
+                    className="absolute left-3 top-4 w-4 h-4"
+                    alt="Image"
+                  />
+                </div>
               </div>
+
+            </div >
+            <div>
+              <RightHalf bgColor={bgBtn} reset={reset} tip={totalTip} total={total} />
             </div>
 
-          </div >
-          <div>
-            <RightHalf bgColor={bgBtn} reset={reset} tip={totalTip} total={total} />
+
+
+
           </div>
-
-
-
-
         </div>
       </div>
     </div>
+
 
 
   );
